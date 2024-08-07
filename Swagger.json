@@ -1,0 +1,241 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "User Authentication API",
+      "version": "1.0.0",
+      "description": "API for BMS"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000"
+      },
+      {
+        "url": "https://user-auth-elt3.onrender.com"
+      }
+    ],
+    "tags":[
+      {"name":"Books"}
+    ],
+    "components": {
+      "securitySchemes": {
+        "BearerAuth": {
+          "type": "http"
+        }
+      },
+      "schemas": {
+        "Book": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "6123abcde12345678abcdef1"
+            },
+            "bookname": {
+              "type": "string",
+              "example": "john_doe"
+            },
+            "author": {
+              "type": "string",
+              "example": "john@example.com"
+            },
+            " publicationYear": {
+              "type": "number",
+              "example": "yourpassword"
+            },
+            "numberOfPages":{
+                "type": "number",
+                "example": "123"
+            }
+
+        }
+        }
+      }
+    },
+    "security": [
+      {
+        "BearerAuth": []
+      }
+    ],
+    "paths": {
+      "/api/books": {
+        "post": {
+          "tags":["Books"],
+          "summary": "Add new book",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Book created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "token": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        },
+        "get": {
+          "tags":["Books"],
+          "summary": "Get all users",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of Books",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/api/books/{id}": {
+        "get": {
+          "tags":["Books"],
+          "summary": "Get a book",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Book found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        },
+        "put": {
+          "tags":["Books"],
+          "summary": "Update a Book",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User updated successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        },
+        "delete": {
+          "tags":["Books"],
+          "summary": "Delete a user",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Book deleted successfully"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      }
+    }
+  }
+  
